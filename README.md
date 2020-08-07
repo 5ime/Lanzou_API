@@ -9,6 +9,7 @@
 
 ### 请求示例
 无密码 https://tenapi.cn/lanzou/?url=https://www.lanzous.com/i8fclgh
+
 有密码 https://tenapi.cn/lanzou/?url=https://www.lanzous.com/itahfehy1bc&pwd=d17u
 
 ### 返回数据
