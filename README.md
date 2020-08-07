@@ -4,7 +4,6 @@
 ### 使用方法
 - url:蓝奏云外链链接
 - pwd:外链密码
-- Github：https://github.com/5ime/Lanzou_api
 <!--more-->
 
 ### 请求示例
