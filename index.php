@@ -3,7 +3,7 @@
  * @package Lanzou
  * @author iami233
  * @version 1.0.0
- * @link https://github.com/5ime/Lanzou_api
+ * @link http://github.com/5ime/Lanzou_api
  */
 header('Access-Control-Allow-Origin:*');
 header('Content-type: application/json');
@@ -20,9 +20,10 @@ if ($url != null) {
         preg_match_all("/<div class=\"md\">(.*?)<span class=\"mtt\">/", $lanzouo, $name);
         preg_match_all('/时间:<\\/span>(.*?)<span class=\\"mt2\\">/', $lanzouo, $time);
         preg_match_all('/发布者:<\\/span>(.*?)<span class=\\"mt2\\">/', $lanzouo, $author);
-        preg_match_all('/var cdomain = \'(.*?)\';/', $lanzouo, $down1);
-        preg_match_all('/var sts = \'(.*?)\'/', $lanzouo, $down2);
+        preg_match_all('/var domianloads = \'(.*?)\';/', $lanzouo, $down1);
+        preg_match_all('/var urlload = \'(.*?)\';/', $lanzouo, $down2);
         preg_match_all('/<div class=\\"md\\">(.*?)<span class=\\"mtt\\">\\((.*?)\\)<\\/span><\\/div>/', $lanzouo, $size);
+        //var_dump($down2);
         $Json = array(
             "code" => 200, 
             "data" => array(
@@ -86,6 +87,9 @@ function curl($url, $ua = 0)
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    $httpheader[] = "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8";
+    $httpheader[] = "Accept-Encoding: gzip, deflate, sdch, br";
+    $httpheader[] = "Accept-Language: zh-CN,zh;q=0.8";
     curl_setopt($ch, CURLOPT_HTTPHEADER, $httpheader);
     if ($ua) {
         curl_setopt($ch, CURLOPT_USERAGENT, $ua);
