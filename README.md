@@ -4,6 +4,7 @@
 ### 使用方法
 - url:蓝奏云外链链接
 - pwd:外链密码
+- type:直接下载
 <!--more-->
 
 ### 支持链接
@@ -16,6 +17,8 @@
 无密码 https://tenapi.cn/lanzou/?url=https://www.lanzous.com/i8fclgh
 
 有密码 https://tenapi.cn/lanzou/?url=https://www.lanzous.com/itahfehy1bc&pwd=d17u
+
+直接下载  https://tenapi.cn/lanzou/?url=https://www.lanzous.com/itahfehy1bc&pwd=d17u&type=down
 
 ### 返回数据
 ~~~ json
