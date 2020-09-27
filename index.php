@@ -2,14 +2,15 @@
 /**
  * @package Lanzou
  * @author iami233
- * @version 1.0.0
+ * @version 1.2.0
  * @link http://github.com/5ime/Lanzou_api
  */
 header('Access-Control-Allow-Origin:*');
 header('Content-type: application/json');
 error_reporting(0);
-$url = $_GET['url'];
-$pwd = $_GET['pwd'];
+$url = @$_GET['url'];
+$pwd = @$_GET['pwd'];
+$type = @$_GET['type'];
 $error = curl($url);
 if (strpos($error,'文件取消分享了') !== false) {
     $Json = array(
@@ -42,6 +43,9 @@ return $Json;
         preg_match_all('/domianload \+ \'(.*?)\'/', $lanzouo, $down2);
         preg_match_all('/<div class=\\"md\\">(.*?)<span class=\\"mtt\\">\\((.*?)\\)<\\/span><\\/div>/', $lanzouo, $size);
         $download = getRedirect($down1[1][0] . $down2[1][0]);
+        if($type == 'down'){
+            header("Location:{$download}");
+        }
         $Json = array(
             "code" => 200, 
             "data" => array(
@@ -79,6 +83,9 @@ return $Json;
     }
     $obj = json_decode($pwdurl, true);
     $download = getRedirect($obj['dom'] . '/file/' . $obj['url']);
+    if($type == 'down'){
+        header("Location:{$download}");
+    }
     $Json = array(
         "code" => 200, 
         "data" => array(
@@ -92,6 +99,7 @@ return $Json;
     $Json = json_encode($Json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     echo stripslashes($Json);
     return $Json;
+
 } else {
     echo '请输入蓝奏云分享的地址，如：https://www.lanzous.com/i8fclgh';
 }
