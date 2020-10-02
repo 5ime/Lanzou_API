@@ -8,10 +8,9 @@
 <!--more-->
 
 ### 支持链接
-- www.lanzous.com
-- www.lanzoui.com
-- 随机二级.lanzous.com
-- 随机二级.lanzoui.com
+- \*.lanzous.com
+- \*.lanzoui.com
+- \*.lanzoux.com
 
 ### 请求示例
 无密码 https://tenapi.cn/lanzou/?url=https://www.lanzous.com/i8fclgh
