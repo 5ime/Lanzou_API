@@ -8,16 +8,16 @@
 header('Access-Control-Allow-Origin:*');
 header('Content-type: application/json');
 error_reporting(0);
-$url = @$_REQUEST['url'];
-$pwd = @$_REQUEST['pwd'];
-$type = @$_REQUEST['type'];
+$url = $_REQUEST['url'];
+$pwd = $_REQUEST['pwd'];
+$type = $_REQUEST['type'];
 if (!empty($url)) {
     $b = 'com/';
     $c = '/';
     $id = GetBetween($url, $b, $c);
-    $d = 'https://www.lanzoux.com/tp/' . $id;
+    $d = 'https://www.lanzous.com/tp/' . $id;
     $lanzou = curl($d);
-    if (empty($lanzou)){
+    if (strpos($lanzou,'文件取消分享了') || empty($lanzou)) {
         $Json = array(
             "code" => 201, 
             "msg" => '文件取消分享了',
@@ -44,7 +44,7 @@ if (!empty($url)) {
             if (!empty($pwd)) {
                 preg_match('/sign\':\'(.*?)\'/', $lanzou, $sign);
                 $post_data = array('action' => 'downprocess', 'sign' => $sign[1], 'p' => $pwd);
-                $pwdurl = send_post('https://wwa.lanzoux.com/ajaxm.php', $post_data);
+                $pwdurl = send_post('https://wwa.lanzous.com/ajaxm.php', $post_data);
                 $obj = json_decode($pwdurl, true);
                 $download = getRedirect($obj['dom'] . '/file/' . $obj['url']);
             }
