@@ -13,11 +13,12 @@
 - \*.lanzoux.com
 
 ### 请求示例
-无密码 https://tenapi.cn/lanzou/?url=https://www.lanzous.com/i8fclgh
+无密码: `?url=https://www.lanzous.com/i8fclgh`
 
-有密码 https://tenapi.cn/lanzou/?url=https://www.lanzous.com/itahfehy1bc&pwd=d17u
+有密码: `?url=https://www.lanzous.com/itahfehy1bc&pwd=d17u`
 
-直接下载  https://tenapi.cn/lanzou/?url=https://www.lanzous.com/itahfehy1bc&pwd=d17u&type=down
+直接下载:  `?url=https://www.lanzous.com/itahfehy1bc&pwd=d17u&type=down`
+
 
 ### 返回数据
 ~~~ json
