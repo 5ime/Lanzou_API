@@ -44,7 +44,7 @@ if (!empty($url)) {
             if (!empty($pwd)) {
                 preg_match('/sign\':\'(.*?)\'/', $lanzou, $sign);
                 $post_data = array('action' => 'downprocess', 'sign' => $sign[1], 'p' => $pwd);
-                $pwdurl = send_post('https://wwa.lanzous.com/ajaxm.php', $post_data);
+                $pwdurl = send_post('https://wwa.lanzoux.com/ajaxm.php', $post_data);
                 $obj = json_decode($pwdurl, true);
                 $download = getRedirect($obj['dom'] . '/file/' . $obj['url']);
             }
