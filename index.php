@@ -15,7 +15,7 @@ if (!empty($url)) {
     $b = 'com/';
     $c = '/';
     $id = GetBetween($url, $b, $c);
-    $d = 'https://www.lanzous.com/tp/' . $id;
+    $d = 'https://www.lanzoux.com/tp/' . $id;
     $lanzou = curl($d);
     if (strpos($lanzou,'文件取消分享了') || empty($lanzou)) {
         $Json = array(
@@ -84,7 +84,7 @@ function send_post($url, $post_data)
     $postdata = http_build_query($post_data);
     $options = array('http' => array(
         'method' => 'POST',
-        'header' => 'Referer: https://www.lanzous.com/\\r\\n' . 'Accept-Language:zh-CN,zh;q=0.9\\r\\n',
+        'header' => 'Referer: https://www.lanzoux.com/\\r\\n' . 'Accept-Language:zh-CN,zh;q=0.9\\r\\n',
         'content' => $postdata,
         'timeout' => 15 * 60,
     ));
