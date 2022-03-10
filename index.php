@@ -2,22 +2,27 @@
 /**
  * @package Lanzou_API
  * @author iami233
- * @version 1.3.0
+ * @version 1.4.0
  * @link http://github.com/5ime/Lanzou_api
  */
 header('Access-Control-Allow-Origin:*');
 header('Content-type: application/json');
 error_reporting(0);
-$url = $_REQUEST['url'];
-$pwd = $_REQUEST['pwd'];
-$type = $_REQUEST['type'];
+$url = @$_REQUEST['url'];
+$pwd = @$_REQUEST['pwd'];
+$type = @$_REQUEST['type'];
 if (!empty($url)) {
+    str_replace('lanzous','lanzoux',$url);
     $b = 'com/';
     $c = '/';
     $id = GetBetween($url, $b, $c);
-    $d = 'https://www.lanzoux.com/tp/' . $id;
+    $d = 'https://www.lanzoui.com/tp/' . $id;
     $lanzou = curl($d);
-    if (strpos($lanzou,'文件取消分享了') || empty($lanzou)) {
+    if (empty($lanzou)){
+        $d = 'https://www.lanzoux.com/tp/' . $id;
+        $lanzou = curl($d);
+    }
+    if (strpos($lanzou,'文件取消分享了') || empty($lanzou) || strpos($lanzou,'访问地址错误')) {
         $Json = array(
             "code" => 201, 
             "msg" => '文件取消分享了',
@@ -31,15 +36,28 @@ if (!empty($url)) {
             preg_match("/<div class=\"md\">(.*?)<span class=\"mtt\">/", $lanzou, $name);
             preg_match('/时间:<\\/span>(.*?)<span class=\\"mt2\\">/', $lanzou, $time);
             preg_match('/发布者:<\\/span>(.*?)<span class=\\"mt2\\">/', $lanzou, $author);
-            preg_match('/var domianload = \'(.*?)\';/', $lanzou, $down1);
+            preg_match('/var domianload = \'(.*?)\'/', $lanzou, $domain);
+            if(empty($domain[1])){
+                preg_match('/submit.href = \'(.*?)\'/', $lanzou, $domain);
+            }
             preg_match('/domianload \+ \'(.*?)\'/', $lanzou, $down2);
             preg_match('/var downloads = \'(.*?)\'/', $lanzou, $down3);
+            if(empty($down3[1])){
+                preg_match('/var loaddown = \'(.*?)\'/', $lanzou, $down3);
+            } 
             preg_match('/<div class=\\"md\\">(.*?)<span class=\\"mtt\\">\\((.*?)\\)<\\/span><\\/div>/', $lanzou, $size);
             if (!empty($down2)){
-                $download = getRedirect($down1[1] . $down2[1]);
+                $download = getRedirect($domain[1] . $down2[1]);
+            }else{
+                $download = getRedirect($domain[1] . $down3[1]);
             }
-            else{
-                $download = getRedirect($down1[1] . $down3[1]);
+            if (strpos($lanzou,'请使用IOS自带浏览器safari下载')){
+                preg_match('/var nmousedows = \'(.*?)url=(.*?)\'/', $lanzou, $down);
+                preg_match('/var nmousedows = \'(.*?)\'\;/', $lanzou, $down1);
+                $arr = simplexml_load_string(curl($down[2]));
+                $down = json_decode(json_encode($arr),true);
+                $download = $down['dict']['array']['dict']['array']['dict'][0]['string'][1];
+                $install = $down1[1];
             }
             if (!empty($pwd)) {
                 preg_match('/sign\':\'(.*?)\'/', $lanzou, $sign);
@@ -84,7 +102,7 @@ function send_post($url, $post_data)
     $postdata = http_build_query($post_data);
     $options = array('http' => array(
         'method' => 'POST',
-        'header' => 'Referer: https://www.lanzoux.com/\\r\\n' . 'Accept-Language:zh-CN,zh;q=0.9\\r\\n',
+        'header' => 'Referer: https://www.lanzous.com/\\r\\n' . 'Accept-Language:zh-CN,zh;q=0.9\\r\\n',
         'content' => $postdata,
         'timeout' => 15 * 60,
     ));
@@ -110,6 +128,7 @@ function curl($url){
 	curl_close($ch);
 	return $output;
 }
+
 function GetBetween($content, $start, $end)
 {
     $r = explode($start, $content);
@@ -129,6 +148,7 @@ function getRedirect($url,$ref=''){
             'Connection: keep-alive',
             'Pragma: no-cache',
             'Upgrade-Insecure-Requests: 1',
+            'X-Forwarded-For: ' . rand_IP()
         );
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -144,3 +164,14 @@ function getRedirect($url,$ref=''){
         curl_close($curl);
         return $url["redirect_url"];
     }
+    
+    function rand_IP(){
+        $ip2id = round(rand(600000, 2550000) / 10000);
+        $ip3id = round(rand(600000, 2550000) / 10000);
+        $ip4id = round(rand(600000, 2550000) / 10000);
+        $arr_1 = array("218","218","66","66","218","218","60","60","202","204","66","66","66","59","61","60","222","221","66","59","60","60","66","218","218","62","63","64","66","66","122","211");
+        $randarr= mt_rand(0,count($arr_1)-1);
+        $ip1id = $arr_1[$randarr];
+        return $ip1id.".".$ip2id.".".$ip3id.".".$ip4id;
+    }
+    
