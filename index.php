@@ -2,7 +2,7 @@
 /**
  * @package Lanzou_API
  * @author iami233
- * @version 1.5.0
+ * @version 1.5.1
  * @link http://github.com/5ime/Lanzou_api
  */
 header('Access-Control-Allow-Origin:*');
@@ -36,24 +36,13 @@ if (!empty($url)) {
             preg_match("/<div class=\"md\">(.*?)<span class=\"mtt\">/", $lanzou, $name);
             preg_match('/时间:<\\/span>(.*?)<span class=\\"mt2\\">/', $lanzou, $time);
             preg_match('/发布者:<\\/span>(.*?)<span class=\\"mt2\\">/', $lanzou, $author);
-            preg_match('/var domianload = \'(.*?)\'/', $lanzou, $domain);
+            preg_match('/var var pototo = \'(.*?)\'/', $lanzou, $domain);
             if(empty($domain[1])){
-                preg_match('/var ccct = \'(.*?)\'/', $lanzou, $domain);
+                preg_match('/var tedomain = \'(.*?)\'/', $lanzou, $domain);
             }
-            preg_match('/domianload \+ \'(.*?)\'/', $lanzou, $down2);
-            preg_match('/var downloads = \'(.*?)\'/', $lanzou, $down3);
-            preg_match('/var oreferr = \'(.*?)\'/', $lanzou, $down4);
-            if(empty($down3[1])){
-                preg_match('/var loaddown = \'(.*?)\'/', $lanzou, $down3);
-            } 
+            preg_match('/domianload = \'(.*?)\'/', $lanzou, $down2);
             preg_match('/<div class=\\"md\\">(.*?)<span class=\\"mtt\\">\\((.*?)\\)<\\/span><\\/div>/', $lanzou, $size);
-            if (!empty($down2)){
-                $download = getRedirect($domain[1] . $down2[1]);
-            }elseif (!empty($down3)) {
-                $download = getRedirect($domain[1] . $down3[1]);
-            }else{
-                $download = getRedirect($domain[1] . $down4[1]);
-            }
+            $download = getRedirect($domain[1] . $down2[1]);
             if (strpos($lanzou,'请使用IOS自带浏览器safari下载')){
                 preg_match('/var nmousedows = \'(.*?)url=(.*?)\'/', $lanzou, $down);
                 preg_match('/var nmousedows = \'(.*?)\'\;/', $lanzou, $down1);
