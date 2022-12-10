@@ -2,7 +2,7 @@
 /**
  * @package Lanzou_API
  * @author iami233
- * @version 1.5.1
+ * @version 1.5.2
  * @link http://github.com/5ime/Lanzou_api
  */
 header('Access-Control-Allow-Origin:*');
@@ -52,7 +52,7 @@ if (!empty($url)) {
                 $install = $down1[1];
             }
             if (!empty($pwd)) {
-                preg_match('/sign\':\'(.*?)\'/', $lanzou, $sign);
+                preg_match('/postsign = \'(.*?)\'/', $lanzou, $sign);
                 $post_data = array('action' => 'downprocess', 'sign' => $sign[1], 'p' => $pwd);
                 $pwdurl = send_post('https://wwa.lanzoux.com/ajaxm.php', $post_data);
                 $obj = json_decode($pwdurl, true);
