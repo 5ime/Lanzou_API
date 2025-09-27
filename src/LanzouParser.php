@@ -49,7 +49,7 @@ class LanzouParser {
             $fileInfo['content'] = curlRequest($apiUrl, $postData, $headers);
         } else {
             preg_match("~<iframe.*?src=\"/(.*?)\"~", $content, $iframe);
-            $iframeUrl = 'https://www.lanzoup.com/' . ($iframe[1] ?? '');
+            $iframeUrl = 'https://www.lanzoux.com/' . ($iframe[1] ?? '');
             $iframeContent = curlRequest($iframeUrl);
 
             preg_match("~wp_sign = '(.*?)'~", $iframeContent, $sign);
@@ -82,7 +82,7 @@ class LanzouParser {
 
     private function formatUrl() {
         $parts = explode('.com/', $this->url);
-        return 'https://www.lanzoup.com/' . ($parts[1] ?? '');
+        return 'https://www.lanzoux.com/' . ($parts[1] ?? '');
     }
 
     private function getHeaders() {
