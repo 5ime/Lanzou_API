@@ -25,7 +25,7 @@ if (!filter_var($url, FILTER_VALIDATE_URL)) {
     response(false, '请输入有效的蓝奏链接');
 }
 
-if (!in_array($type, ['', 'down'])) {
+if (!in_array($type, ['', 'down'], true)) {
     response(false, '无效的请求类型');
 }
 
@@ -33,19 +33,22 @@ try {
     $parser = new LanzouParser($url, $pwd, $type);
     $result = $parser->parse();
 
-    if ($type === 'down') {
-        if (empty($result['data']['url'])) {
-            response(false, '获取下载链接失败');
-        }
-        header("Location: {$result['data']['url']}");
-        exit;
-    }
-
-    if (!$result['success']) {
+    if (empty($result['success'])) {
         response(false, $result['msg'] ?? '解析失败，请稍后再试');
     }
 
-    response(true, '解析成功', $result['data']);
+    if ($type === 'down') {
+        if (($result['data']['type'] ?? '') === 'folder') {
+            response(false, '文件夹链接不支持直接下载，请解析单个文件');
+        }
+        if (empty($result['data']['url'])) {
+            response(false, '获取下载链接失败');
+        }
+        header('Location: ' . $result['data']['url']);
+        exit;
+    }
+
+    response(true, $result['msg'] ?? '解析成功', $result['data']);
 } catch (Exception $e) {
     response(false, '解析过程中发生错误：' . $e->getMessage());
-} 
+}
